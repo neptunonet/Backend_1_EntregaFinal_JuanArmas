@@ -25,8 +25,8 @@ const productSchema = new Schema({
         trim: true,
     },
 }, {
-    timestamps: true, 
-    versionKey: false, 
+    timestamps: true,
+    versionKey: false,
 });
 
 productSchema.plugin(paginate);

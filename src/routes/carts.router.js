@@ -6,7 +6,7 @@ const cartManager = new CartManager();
 
 router.get("/", async (req, res) => {
     try {
-      const carts = await cartManager.getAll(); // Asume que tienes un método getAll en tu CartManager
+      const carts = await cartManager.getAll(); 
       res.render("cart", { carts });
     } catch (error) {
       console.error("Error al obtener los carritos:", error);
@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
     }
   });
 
-// Ruta para obtener un carrito por su ID
+
 router.get("/:id", async (req, res) => {
     try {
         const cart = await cartManager.getOneById(req.params.id, { populate: true });
@@ -24,7 +24,7 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-// Ruta para crear un nuevo carrito
+
 router.post("/", async (req, res) => {
     try {
         const cart = await cartManager.insertOne(req.body);
@@ -34,7 +34,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-// Ruta para agregar un producto a un carrito o incrementar su cantidad
+
 router.post("/:cid/products/:pid", async (req, res) => {
     try {
         const { cid, pid } = req.params;
@@ -45,7 +45,6 @@ router.post("/:cid/products/:pid", async (req, res) => {
     }
 });
 
-// Ruta para eliminar un producto de un carrito
 router.delete("/:cid/products/:pid", async (req, res) => {
     try {
         const { cid, pid } = req.params;
@@ -56,7 +55,7 @@ router.delete("/:cid/products/:pid", async (req, res) => {
     }
 });
 
-// Ruta para actualizar todo el carrito
+
 router.put("/:cid", async (req, res) => {
     try {
         const { cid } = req.params;
@@ -68,7 +67,7 @@ router.put("/:cid", async (req, res) => {
     }
 });
 
-// Ruta para actualizar la cantidad de un producto en el carrito
+
 router.put("/:cid/products/:pid", async (req, res) => {
     try {
         const { cid, pid } = req.params;
@@ -80,7 +79,7 @@ router.put("/:cid/products/:pid", async (req, res) => {
     }
 });
 
-// Ruta para vaciar un carrito
+
 router.delete("/:cid", async (req, res) => {
     try {
         const { cid } = req.params;

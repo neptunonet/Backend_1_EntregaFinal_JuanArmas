@@ -18,7 +18,7 @@ const cartSchema = new Schema({
         },
     ],
 }, {
-    timestamps: true, 
+    timestamps: true,
     versionKey: false,
 });
 

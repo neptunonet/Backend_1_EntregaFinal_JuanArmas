@@ -4,7 +4,7 @@ import ProductManager from "../managers/ProductManager.js";
 const router = Router();
 const productManager = new ProductManager();
 
-//Ruta para obtener los productos
+
 router.get("/", async (req, res) => {
     try {
         const products = await productManager.getAll(req.query);
@@ -42,7 +42,7 @@ router.get('/categories', async (req, res) => {
     }
 });
 
-// Ruta para obtener un producte por su ID
+
 router.get("/:id", async (req, res) => {
     try {
         const product = await productManager.getOneById(req.params.id);
@@ -52,7 +52,7 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-// Ruta para crear un producte
+
 router.post("/", async (req, res) => {
     try {
         const product = await productManager.insertOne(req.body);
@@ -62,7 +62,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-// Ruta para actualizar un producte por su ID
+
 router.put("/:id", async (req, res) => {
     try {
         const product = await productManager.updateOneById(req.params.id, req.body);
@@ -72,7 +72,6 @@ router.put("/:id", async (req, res) => {
     }
 });
 
-// Ruta para eliminar un producte por su ID
 router.delete("/:id", async (req, res) => {
     try {
         await productManager.deleteOneById(req.params.id);

@@ -31,7 +31,7 @@ export default class CartManager {
       }
     }
 
-    
+
     async getOneById(id) {
         try {
             return await this.#findOneById(id);
@@ -70,74 +70,74 @@ export default class CartManager {
         if (!isValidID(cartId) || !isValidID(productId)) {
           throw new ErrorManager("ID inválido", 400);
         }
-    
+
         const cart = await this.#cartModel.findByIdAndUpdate(
           cartId,
           { $pull: { products: { product: productId } } },
           { new: true }
         ).populate("products.product");
-    
+
         if (!cart) {
           throw new ErrorManager("Carrito no encontrado", 404);
         }
-    
+
         return cart;
       }
-    
+
       async updateCart(cartId, products) {
         if (!isValidID(cartId)) {
           throw new ErrorManager("ID inválido", 400);
         }
-    
+
         const cart = await this.#cartModel.findByIdAndUpdate(
           cartId,
           { products },
           { new: true }
         ).populate("products.product");
-    
+
         if (!cart) {
           throw new ErrorManager("Carrito no encontrado", 404);
         }
-    
+
         return cart;
       }
-    
+
       async updateProductQuantity(cartId, productId, quantity) {
         if (!isValidID(cartId) || !isValidID(productId)) {
           throw new ErrorManager("ID inválido", 400);
         }
-    
+
         const cart = await this.#cartModel.findOneAndUpdate(
           { _id: cartId, "products.product": productId },
           { $set: { "products.$.quantity": quantity } },
           { new: true }
         ).populate("products.product");
-    
+
         if (!cart) {
           throw new ErrorManager("Carrito o producto no encontrado", 404);
         }
-    
+
         return cart;
       }
-    
+
       async emptyCart(cartId) {
         if (!isValidID(cartId)) {
           throw new ErrorManager("ID inválido", 400);
         }
-    
+
         const cart = await this.#cartModel.findByIdAndUpdate(
           cartId,
           { products: [] },
           { new: true }
         );
-    
+
         if (!cart) {
           throw new ErrorManager("Carrito no encontrado", 404);
         }
-    
+
         return cart;
       }
-    
+
       async getOneById(id, options = {}) {
         if (!isValidID(id)) {
           throw new ErrorManager("ID inválido", 400);

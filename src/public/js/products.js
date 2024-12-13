@@ -81,7 +81,7 @@ async function addToCart(productId) {
     try {
         // Get the current cart ID from localStorage or create a new one
         let cartId = localStorage.getItem('cartId');
-        
+
         if (!cartId) {
             // If no cart exists, create a new one
             const createCartResponse = await fetch('/api/carts', { method: 'POST' });
@@ -140,7 +140,7 @@ categorySelect.addEventListener("change", (event) => {
     currentCategory = event.target.value;
     currentPage = 1;
     loadProductsList(currentPage, currentSort, currentCategory, currentStatus, currentPriceOrder);
-  });
+});
 
 statusSelect.addEventListener("change", (event) => {
     currentStatus = event.target.value;
