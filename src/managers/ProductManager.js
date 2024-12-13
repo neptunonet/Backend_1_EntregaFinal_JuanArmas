@@ -27,18 +27,24 @@ export default class ProductManager {
             const $and = [];
 
             if (params?.title) $and.push({ title: { $regex: params.title, $options: "i" } });
+            if (params?.category) $and.push({ category: params.category });
+            if (params?.status) $and.push({ status: params.status === 'true' });
+
             const filters = $and.length > 0 ? { $and } : {};
 
-            const sort = {
-                asc: { title: 1 },
-                desc: { title: -1 },
-            };
+            const sort = {};
+            if (params?.sort === 'asc' || params?.sort === 'desc') {
+                sort.title = params.sort === 'asc' ? 1 : -1;
+            }
+            if (params?.priceOrder === 'asc' || params?.priceOrder === 'desc') {
+                sort.price = params.priceOrder === 'asc' ? 1 : -1;
+            }
 
             const paginationOptions = {
-                limit: params?.limit || 10, // Número de documentos por página (por defecto 10)
-                page: params?.page || 1, // Página actual (por defecto 1)
-                sort: sort[params?.sort] ?? {}, // Ordenamiento (sin orden por defecto)
-                lean: true, // Convertir los resultados en objetos planos
+                limit: params?.limit || 10,
+                page: params?.page || 1,
+                sort: sort,
+                lean: true,
             };
 
             return await this.#productModel.paginate(filters, paginationOptions);
@@ -46,6 +52,18 @@ export default class ProductManager {
             throw ErrorManager.handleError(error);
         }
     }
+
+
+    async getCategories() {
+        try {
+            const categories = await this.#productModel.distinct('category');
+            return categories;
+        } catch (error) {
+            throw ErrorManager.handleError(error);
+        }
+    }
+
+
     async getOneById(id) {
         try {
             return await this.#findOneById(id);
@@ -92,3 +110,4 @@ export default class ProductManager {
         }
     }
 }
+

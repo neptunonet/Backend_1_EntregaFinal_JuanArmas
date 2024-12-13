@@ -18,10 +18,8 @@ let currentPriceOrder = "";
 
 const loadCategories = async () => {
     try {
-        const response = await fetch('/api/products/categories', { method: 'GET' });
+        const response = await fetch('/api/categories', { method: 'GET' });
         const categories = await response.json();
-        
-        console.log('Categorías cargadas:', categories);
 
         categorySelect.innerHTML = '<option value="">Todas las categorías</option>';
         categories.forEach(category => {
@@ -36,15 +34,14 @@ const loadCategories = async () => {
 };
 const loadProductsList = async (page = 1, sort = "", category = "", status = "", priceOrder = "") => {
     try {
-        const queryParams = new URLSearchParams();
-        queryParams.append('limit', 10);
-        queryParams.append('page', page);
-        
-        if (sort) queryParams.append('sort', sort);
-        if (category) queryParams.append('category', category);
-        if (status) queryParams.append('status', status);
-        if (priceOrder) queryParams.append('priceOrder', priceOrder);
-
+        const queryParams = new URLSearchParams({
+            limit: 10,
+            page,
+            sort,
+            category,
+            status,
+            priceOrder
+        });
         const response = await fetch(`/api/products?${queryParams}`, { method: "GET" });
         const data = await response.json();
         const products = data.payload.docs ?? [];

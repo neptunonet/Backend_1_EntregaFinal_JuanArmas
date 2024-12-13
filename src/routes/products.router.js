@@ -14,6 +14,33 @@ router.get("/", async (req, res) => {
     }
 });
 
+router.get('/products', async (req, res) => {
+    try {
+        const { page = 1, limit = 10, sort, category, status, priceOrder } = req.query;
+        const options = {
+            page: parseInt(page),
+            limit: parseInt(limit),
+            sort: sort ? JSON.parse(sort) : undefined
+        };
+        const filter = {};
+        if (category) filter.category = category; // Asegúrate de que esta línea esté presente
+        if (status) filter.status = status === 'true';
+
+        const result = await productManager.getProducts(filter, options, priceOrder);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.get('/categories', async (req, res) => {
+    try {
+        const categories = await productManager.getCategories();
+        res.json(categories);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 // Ruta para obtener un producte por su ID
 router.get("/:id", async (req, res) => {
@@ -54,5 +81,6 @@ router.delete("/:id", async (req, res) => {
         res.status(error.code).json({ status: "error", message: error.message });
     }
 });
+
 
 export default router;
