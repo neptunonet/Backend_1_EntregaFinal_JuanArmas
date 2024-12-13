@@ -3,7 +3,13 @@ import paths from "../utils/paths.js";
 
 // Configura el servidor para usar Handlebars como motor de plantillas
 export const config = (app) => {
-    app.engine("handlebars", handlebars.engine());
+    const hbs = handlebars.create({
+        helpers: {
+            cartUrl: () => '/cart', 
+        }
+    });
+
+    app.engine("handlebars", hbs.engine);
     app.set("views", paths.views);
     app.set("view engine", "handlebars");
 };

@@ -20,8 +20,6 @@ const loadCategories = async () => {
     try {
         const response = await fetch('/api/products/categories', { method: 'GET' });
         const categories = await response.json();
-        
-        console.log('Categorías cargadas:', categories);
 
         categorySelect.innerHTML = '<option value="">Todas las categorías</option>';
         categories.forEach(category => {
@@ -39,7 +37,7 @@ const loadProductsList = async (page = 1, sort = "", category = "", status = "",
         const queryParams = new URLSearchParams();
         queryParams.append('limit', 10);
         queryParams.append('page', page);
-        
+
         if (sort) queryParams.append('sort', sort);
         if (category) queryParams.append('category', category);
         if (status) queryParams.append('status', status);
@@ -62,16 +60,15 @@ const loadProductsList = async (page = 1, sort = "", category = "", status = "",
                 <p>Precio: $${product.price}</p>
                 <p>Stock: ${product.stock}</p>
                 <p>Estado: ${product.status ? 'Activo' : 'Inactivo'}</p>
+                <button onclick="addToCart('${product.id}')">Add to Cart</button>
             `;
             productsGrid.appendChild(productCard);
         });
 
-        // Actualizar la información de paginación
         currentPage = data.payload.page;
         totalPages = data.payload.totalPages;
         currentPageSpan.textContent = `Página ${currentPage} de ${totalPages}`;
 
-        // Habilitar o deshabilitar botones de paginación
         btnPrevPage.disabled = currentPage === 1;
         btnNextPage.disabled = currentPage === totalPages;
     } catch (error) {
@@ -79,6 +76,45 @@ const loadProductsList = async (page = 1, sort = "", category = "", status = "",
     }
 };
 
+
+async function addToCart(productId) {
+    try {
+        // Get the current cart ID from localStorage or create a new one
+        let cartId = localStorage.getItem('cartId');
+        
+        if (!cartId) {
+            // If no cart exists, create a new one
+            const createCartResponse = await fetch('/api/carts', { method: 'POST' });
+            const createCartData = await createCartResponse.json();
+            cartId = createCartData.payload._id;
+            localStorage.setItem('cartId', cartId);
+        }
+
+        // Make a POST request to add the product to the cart
+        const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to add product to cart');
+        }
+
+        const data = await response.json();
+
+        if (data.status === 'success') {
+            console.log('Product added to cart successfully:', productId);
+            alert('Product added to cart successfully!');
+        } else {
+            throw new Error(data.message || 'Failed to add product to cart');
+        }
+    } catch (error) {
+        console.error('Error adding product to cart:', error);
+        alert('Failed to add product to cart. Please try again.');
+    }
+}
 btnRefreshProductsList.addEventListener("click", () => {
     loadProductsList(currentPage, currentSort, currentCategory, currentStatus, currentPriceOrder);
 });
