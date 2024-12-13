@@ -22,21 +22,16 @@ export default class CartManager {
 
         return cart;
     }
-    async getAll(params) {
-        try {
-            const paginationOptions = {
-                limit: params?.limit || 10, // Número de documentos por página (por defecto 10)
-                page: params?.page || 1, // Página actual (por defecto 1)
-                populate: "products.product", // Poblar el campo virtual 'products'
-                lean: true, // Convertir los resultados en objetos planos
-            };
-
-            return await this.#cartModel.paginate({}, paginationOptions);
-        } catch (error) {
-            throw ErrorManager.handleError(error);
-        }
+    async getAll() {
+      try {
+        const carts = await this.#cartModel.find().populate('products.product');
+        return carts;
+      } catch (error) {
+        throw new ErrorManager("Error al obtener los carritos", 500);
+      }
     }
 
+    
     async getOneById(id) {
         try {
             return await this.#findOneById(id);

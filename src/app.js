@@ -33,6 +33,7 @@ configHandlebars(app);
 // Declaración de rutas
 app.use("/api/products", routerProducts);
 app.use("/api/carts", routerCarts);
+app.use("/cart", routerCarts);
 app.use("/", routerViewHome);
 
 // Se levanta el servidor oyendo en el puerto definido

@@ -4,16 +4,15 @@ import CartManager from "../managers/CartManager.js";
 const router = Router();
 const cartManager = new CartManager();
 
-// Ruta para obtener todos los carritos
 router.get("/", async (req, res) => {
     try {
-        const carts = await cartManager.getAll(req.query);
-        res.render("cart", { carts });
-        res.status(200).json({ status: "success", payload: carts });
+      const carts = await cartManager.getAll(); // Asume que tienes un método getAll en tu CartManager
+      res.render("cart", { carts });
     } catch (error) {
-        res.status(error.code).json({ status: "error", message: error.message });
+      console.error("Error al obtener los carritos:", error);
+      res.status(500).send("Error al obtener los carritos");
     }
-});
+  });
 
 // Ruta para obtener un carrito por su ID
 router.get("/:id", async (req, res) => {

@@ -60,7 +60,7 @@ const loadProductsList = async (page = 1, sort = "", category = "", status = "",
                 <p>Precio: $${product.price}</p>
                 <p>Stock: ${product.stock}</p>
                 <p>Estado: ${product.status ? 'Activo' : 'Inactivo'}</p>
-                <button onclick="addToCart('${product.id}')">Add to Cart</button>
+                <button onclick="addToCart('${product.id}')">Agregar al Carrito</button>
             `;
             productsGrid.appendChild(productCard);
         });

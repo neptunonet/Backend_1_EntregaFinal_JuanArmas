@@ -1,15 +1,20 @@
-<h1>Carrito de Compras</h1>
-{{#if carts.length}}
-    {{#each carts}}
-        <div class="cart">
-            <h2>Carrito {{this._id}}</h2>
-            <ul>
-                {{#each this.products}}
-                    <li>{{this.product.title}} - Cantidad: {{this.quantity}}</li>
-                {{/each}}
-            </ul>
-        </div>
-    {{/each}}
-{{else}}
-    <p>No hay carritos para mostrar.</p>
-{{/if}}
+<div class="cart-container">
+    <h1>Carrito de Compras</h1>
+    {{#if carts.length}}
+        {{#each carts}}
+            <div class="cart">
+                <h2>Carrito {{this._id}}</h2>
+                <ul>
+                    {{#each this.products}}
+                        <li>{{this.product.title}} - Cantidad: {{this.quantity}}</li>
+                    {{/each}}
+                </ul>
+                <button class="btn btn-danger" onclick="emptyCart('{{this._id}}')">Vaciar Carrito</button>
+            </div>
+        {{/each}}
+    {{else}}
+        <p>No hay carritos para mostrar.</p>
+    {{/if}}
+    <a href="/" class="btn">Volver a la Home</a>
+</div>
+ <script src="/api/public/js/carts.js"></script>
