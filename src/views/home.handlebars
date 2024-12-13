@@ -1,0 +1,29 @@
+<header>
+    <h1>Inicio</h1>
+</header>
+
+<main>
+    <section>
+        <h3>Productos</h3>
+        <div class="products">
+            <div class="products__controls">
+                <select id="sort-select">
+                    <option value="">Ordenar por título</option>
+                    <option value="asc">Ascendente</option>
+                    <option value="desc">Descendente</option>
+                </select>
+                <button id="btn-refresh-products-list">Recargar Lista</button>
+            </div>
+            <div class="products__list">
+                <ul class="products__list__item" id="products-list"></ul>
+            </div>
+            <div class="products__pagination">
+                <button id="btn-prev-page" disabled>Anterior</button>
+                <span id="current-page">Página 1</span>
+                <button id="btn-next-page">Siguiente</button>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="/api/public/js/products.js"></script>

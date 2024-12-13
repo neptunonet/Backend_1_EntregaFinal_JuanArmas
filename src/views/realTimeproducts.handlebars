@@ -1,0 +1,41 @@
+<header>
+    <h1>INICIO - Productes en Tiempo Real</h1>
+</header>
+
+<main>
+    <section>
+        <h3>Productes</h3>
+        {{!-- Uso de nomenclatura BEM (B de bloque, E de elemento y M de modificador)--}}
+        <div class="products">
+            <div class="products__list">
+                <ul class="products__list__item" id="products-list"></ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h3>Formulario de Productes</h3>
+        <form class="products__form" id="products-form">
+            <input type="text" name="title" placeholder="Nombre del producte">
+            <div>¿Está activo?<input type="checkbox" name="status"></div>
+            <input type="number" name="stock" placeholder="Stock del producte">
+
+            <input type="submit" value="Guardar" style="width: 100%">
+        </form>
+    </section>
+
+    <section>
+        <h3>Eliminación de Productes</h3>
+        <div class="products__delete">
+            <input type="number" class="products__delete__input" id="input-product-id"
+                placeholder="ID del Producte">
+            <button id="btn-delete-product">Eliminar</button>
+        </div>
+    </section>
+
+    <p class="error-message" id="error-message"></p>
+</main>
+
+{{!-- El script de socket.io debe estar antes que home.js --}}
+<script src="/socket.io/socket.io.js"></script>
+<script src="/api/public/js/products.socket.js"></script>
