@@ -1,25 +1,3 @@
-// const productsList = document.getElementById("products-list");
-// const btnRefreshProductsList = document.getElementById("btn-refresh-products-list");
-
-// const loadProductsList = async () => {
-//     const response = await fetch("/api/products", { method: "GET" });
-//     const data = await response.json();
-//     const products = data.payload.docs ?? [];
-
-//     productsList.innerText = "";
-
-//     products.forEach((product) => {
-//         productsList.innerHTML += `<li>Id: ${product.id} - Nombre: ${product.title}</li>`;
-//     });
-// };
-
-// btnRefreshProductsList.addEventListener("click", () => {
-//     loadProductsList();
-//     console.log("¡Lista recargada!");
-// });
-
-// // Se ejecuta para cargar la lista de productes al ingresar o refrescar
-// loadProductsList();
 const productsList = document.getElementById("products-list");
 const btnRefreshProductsList = document.getElementById("btn-refresh-products-list");
 const btnPrevPage = document.getElementById("btn-prev-page");
@@ -46,12 +24,18 @@ const loadProductsList = async (page = 1, sort = "") => {
             productsList.appendChild(li);
         });
 
-        // ... (resto del código)
+        // Actualizar la información de paginación
+        currentPage = data.payload.page;
+        totalPages = data.payload.totalPages;
+        currentPageSpan.textContent = `Página ${currentPage} de ${totalPages}`;
+
+        // Habilitar o deshabilitar botones de paginación
+        btnPrevPage.disabled = currentPage === 1;
+        btnNextPage.disabled = currentPage === totalPages;
     } catch (error) {
         console.error("Error al cargar los productos:", error);
     }
 };
-
 
 btnRefreshProductsList.addEventListener("click", () => {
     loadProductsList(currentPage, currentSort);
@@ -59,22 +43,19 @@ btnRefreshProductsList.addEventListener("click", () => {
 
 btnPrevPage.addEventListener("click", () => {
     if (currentPage > 1) {
-        currentPage--;
-        loadProductsList(currentPage, currentSort);
+        loadProductsList(currentPage - 1, currentSort);
     }
 });
 
 btnNextPage.addEventListener("click", () => {
     if (currentPage < totalPages) {
-        currentPage++;
-        loadProductsList(currentPage, currentSort);
+        loadProductsList(currentPage + 1, currentSort);
     }
 });
 
 sortSelect.addEventListener("change", (event) => {
     currentSort = event.target.value;
-    currentPage = 1; // Reset to first page when changing sort
-    loadProductsList(currentPage, currentSort);
+    loadProductsList(1, currentSort);
 });
 
 // Se ejecuta para cargar la lista de productos al ingresar o refrescar
