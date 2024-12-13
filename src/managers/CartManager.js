@@ -31,14 +31,6 @@ export default class CartManager {
       }
     }
 
-
-    async getOneById(id) {
-        try {
-            return await this.#findOneById(id);
-        } catch (error) {
-            throw ErrorManager.handleError(error);
-        }
-    }
     async insertOne(data) {
         try {
             const cart = await this.#cartModel.create(data);
@@ -47,19 +39,20 @@ export default class CartManager {
             throw ErrorManager.handleError(error);
         }
     }
+
     async addOneProduct(id, productId) {
         try {
-            const cart = await this.#findOneById(id);
+            let cart = await this.#findOneById(id);
             const productIndex = cart.products.findIndex((item) => item.product._id.toString() === productId);
-
+    
             if (productIndex >= 0) {
                 cart.products[productIndex].quantity++;
             } else {
                 cart.products.push({ product: productId, quantity: 1 });
             }
-
+    
             await cart.save();
-
+    
             return cart;
         } catch (error) {
             throw new ErrorManager(error.message, error.code);

@@ -37,7 +37,20 @@ router.post("/", async (req, res) => {
 router.post("/:cid/products/:pid", async (req, res) => {
     try {
         const { cid, pid } = req.params;
-        const cart = await cartManager.addOneProduct(cid, pid);
+        let cart;
+
+        try {
+            cart = await cartManager.getOneById(cid, { populate: true });
+        } catch (error) {
+            if (error.code === 404) {
+                // Si el carrito no existe, creamos uno nuevo
+                cart = await cartManager.insertOne({ products: [] });
+            } else {
+                throw error;
+            }
+        }
+
+        cart = await cartManager.addOneProduct(cart._id, pid);
         res.status(200).json({ status: "success", payload: cart });
     } catch (error) {
         res.status(error.code || 500).json({ status: "error", message: error.message });
