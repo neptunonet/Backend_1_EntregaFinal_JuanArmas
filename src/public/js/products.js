@@ -15,6 +15,72 @@ let currentSort = "";
 let currentCategory = "";
 let currentStatus = "";
 let currentPriceOrder = "";
+let cartCount = 0;
+
+async function addToCart(productId) {
+    try {
+        let cartId = localStorage.getItem('cartId');
+
+        if (!cartId) {
+            const createCartResponse = await fetch('/api/carts', { method: 'POST' });
+            const createCartData = await createCartResponse.json();
+            cartId = createCartData.payload._id;
+            localStorage.setItem('cartId', cartId);
+        }
+
+        const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al agregar producto al Cart');
+        }
+
+        const data = await response.json();
+
+        if (data.status === 'success') {
+            //console.log('Product added to cart successfully:', productId);
+            //alert('Product added to cart successfully!');
+            updateCartCount(1);
+        } else {
+            throw new Error(data.message || 'Error al agregar producto al Cart');
+        }
+    } catch (error) {
+        console.error('Error al agregar producto al Cart:', error);
+        //alert('Failed to add product to cart. Please try again.');
+    }
+}
+
+function updateCartCount(increment) {
+    cartCount += increment;
+    const cartCountElement = document.getElementById('cart-count');
+    if (cartCountElement) {
+        cartCountElement.textContent = cartCount;
+    }
+}
+async function getInitialCartCount() {
+    try {
+        const cartId = localStorage.getItem('cartId');
+        if (!cartId) {
+            updateCartCount(0);
+            return;
+        }
+
+        const response = await fetch(`/api/carts/${cartId}`);
+        if (response.ok) {
+            const cart = await response.json();
+            if (cart.payload && cart.payload.products) {
+                cartCount = cart.payload.products.reduce((total, product) => total + product.quantity, 0);
+                updateCartCount(0);
+            }
+        }
+    } catch (error) {
+        console.error('Error al obtener el conteo inicial del carrito:', error);
+    }
+}
 
 const loadCategories = async () => {
     try {
@@ -32,6 +98,7 @@ const loadCategories = async () => {
         console.error("Error al cargar las categorías:", error);
     }
 };
+
 const loadProductsList = async (page = 1, sort = "", category = "", status = "", priceOrder = "") => {
     try {
         const queryParams = new URLSearchParams();
@@ -47,7 +114,6 @@ const loadProductsList = async (page = 1, sort = "", category = "", status = "",
         const data = await response.json();
         const products = data.payload.docs ?? [];
 
-        // Limpiar la grilla antes de agregar nuevos productos
         productsGrid.innerHTML = "";
 
         products.forEach((product) => {
@@ -76,45 +142,6 @@ const loadProductsList = async (page = 1, sort = "", category = "", status = "",
     }
 };
 
-
-async function addToCart(productId) {
-    try {
-        // Get the current cart ID from localStorage or create a new one
-        let cartId = localStorage.getItem('cartId');
-
-        if (!cartId) {
-            // If no cart exists, create a new one
-            const createCartResponse = await fetch('/api/carts', { method: 'POST' });
-            const createCartData = await createCartResponse.json();
-            cartId = createCartData.payload._id;
-            localStorage.setItem('cartId', cartId);
-        }
-
-        // Make a POST request to add the product to the cart
-        const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to add product to cart');
-        }
-
-        const data = await response.json();
-
-        if (data.status === 'success') {
-            console.log('Product added to cart successfully:', productId);
-            alert('Product added to cart successfully!');
-        } else {
-            throw new Error(data.message || 'Failed to add product to cart');
-        }
-    } catch (error) {
-        console.error('Error adding product to cart:', error);
-        alert('Failed to add product to cart. Please try again.');
-    }
-}
 btnRefreshProductsList.addEventListener("click", () => {
     loadProductsList(currentPage, currentSort, currentCategory, currentStatus, currentPriceOrder);
 });
@@ -138,8 +165,7 @@ sortSelect.addEventListener("change", (event) => {
 
 categorySelect.addEventListener("change", (event) => {
     currentCategory = event.target.value;
-    currentPage = 1;
-    loadProductsList(currentPage, currentSort, currentCategory, currentStatus, currentPriceOrder);
+    loadProductsList(1, currentSort, currentCategory, currentStatus, currentPriceOrder);
 });
 
 statusSelect.addEventListener("change", (event) => {
@@ -152,8 +178,9 @@ priceOrderSelect.addEventListener("change", (event) => {
     loadProductsList(1, currentSort, currentCategory, currentStatus, currentPriceOrder);
 });
 
-// Cargar categorías y lista de productos al iniciar
+// Inicialización
 document.addEventListener('DOMContentLoaded', () => {
+    getInitialCartCount();
     loadCategories();
     loadProductsList();
 });

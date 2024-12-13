@@ -1,61 +1,4 @@
-* {
-    box-sizing: border-box;
-}
-
-h1 {
-    color: rgb(233, 227, 227);
-}
-
-.error404 {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.error404 img {
-    width: 400px;
-}
-
-.products {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    width: 500px;
-}
-
-.products__list {
-    height: 200px;
-    border: 1px solid black;
-}
-
-.products__list__item {
-    list-style-position: inside;
-    padding: 0;
-    margin: 0.25rem;
-}
-
-.products__form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    width: 500px;
-}
-
-.products__delete {
-    display: flex;
-    gap: 0.5rem;
-    width: 500px;
-}
-
-.products__delete__input {
-    width: 100%;
-}
-
-.error-message {
-    color: brown;
-}
-
+/* Estilos generales */
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
@@ -64,88 +7,22 @@ body {
     background-color: #f4f4f4;
 }
 
+/* Estilos del encabezado */
 header {
     background-color: #333;
     color: #fff;
-    text-align: center;
     padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
+/* Estilos del contenido principal */
 main {
     padding: 2rem;
 }
 
-.products {
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-}
-
-.products__controls {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-}
-
-#sort-select {
-    padding: 0.5rem;
-    border-radius: 3px;
-    border: 1px solid #ddd;
-}
-
-#btn-refresh-products-list {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    border-radius: 3px;
-}
-
-.products__list {
-    margin-bottom: 1rem;
-}
-
-.products__list__item {
-    list-style-type: none;
-    padding: 0;
-}
-
-.products__list__item li {
-    background-color: #f9f9f9;
-    margin-bottom: 0.5rem;
-    padding: 0.5rem;
-    border-radius: 3px;
-}
-
-.products__pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.products__pagination button {
-    background-color: #008CBA;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    margin: 0 0.5rem;
-    cursor: pointer;
-    border-radius: 3px;
-}
-
-.products__pagination button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-}
-
-#current-page {
-    font-weight: bold;
-}
-
-/* ... (mantén los estilos existentes) ... */
-
+/* Estilos de la sección de productos */
 .products {
     background-color: #fff;
     border-radius: 5px;
@@ -156,6 +33,31 @@ main {
     margin: 0 auto;
 }
 
+/* Controles de productos (ordenar, filtrar, etc.) */
+.products__controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+/* Estilos para los selectores */
+#sort-select, #category-select, #status-select, #price-order-select {
+    padding: 0.5rem;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+}
+
+/* Botón para recargar la lista de productos */
+#btn-refresh-products-list {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+/* Cuadrícula de productos */
 .products__grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -163,6 +65,7 @@ main {
     margin-bottom: 1rem;
 }
 
+/* Tarjeta de producto individual */
 .product-card {
     background-color: #f9f9f9;
     border-radius: 5px;
@@ -189,12 +92,33 @@ main {
     color: #666;
 }
 
-
-main {
-    padding: 2rem;
+/* Controles de paginación */
+.products__pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.products__pagination button {
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    border-radius: 3px;
+}
 
+.products__pagination button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+#current-page {
+    font-weight: bold;
+}
+
+/* Estilos del carrito */
 .cart-container {
     max-width: 800px;
     margin: 0 auto;
@@ -230,6 +154,7 @@ main {
     border-bottom: 1px solid #eee;
 }
 
+/* Estilos de botones */
 .btn {
     display: inline-block;
     padding: 10px 15px;
@@ -251,4 +176,51 @@ main {
 
 .btn-danger:hover {
     background-color: #bd2130;
+}
+
+.btn-primary {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+/* Icono del carrito */
+.cart-icon {
+    background-color: #007bff;
+    color: white;
+    border-radius: 25px; /* Aumentado para hacer el carrito más redondeado */
+    padding: 8px 15px; /* Aumentado para hacer el carrito más grande */
+    font-size: 1em; /* Aumentado para hacer el texto más grande */
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Aumentado para dar más espacio entre el ícono y el texto */
+    transition: background-color 0.3s;
+    position: relative;
+}
+
+.cart-icon:hover {
+    background-color: #0056b3;
+}
+
+.cart-icon .iconify {
+    font-size: 1.5em; /* Aumentado para hacer el ícono más grande */
+}
+
+/* Contador del carrito */
+.cart-count {
+    position: absolute;
+    top: -8px; /* Ajustado para posicionar mejor la pill */
+    right: -8px; /* Ajustado para posicionar mejor la pill */
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px; /* Reducido para hacer la pill más pequeña */
+    font-size: 12px; /* Reducido para hacer el texto más pequeño */
+    font-weight: bold;
+    min-width: 18px; /* Reducido para hacer la pill más pequeña */
+    min-height: 18px; /* Reducido para hacer la pill más pequeña */
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
