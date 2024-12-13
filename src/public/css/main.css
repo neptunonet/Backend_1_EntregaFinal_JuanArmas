@@ -3,7 +3,7 @@
 }
 
 h1 {
-    color: brown;
+    color: rgb(233, 227, 227);
 }
 
 .error404 {
@@ -55,3 +55,137 @@ h1 {
 .error-message {
     color: brown;
 }
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+}
+
+main {
+    padding: 2rem;
+}
+
+.products {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+}
+
+.products__controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+#sort-select {
+    padding: 0.5rem;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+}
+
+#btn-refresh-products-list {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.products__list {
+    margin-bottom: 1rem;
+}
+
+.products__list__item {
+    list-style-type: none;
+    padding: 0;
+}
+
+.products__list__item li {
+    background-color: #f9f9f9;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 3px;
+}
+
+.products__pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.products__pagination button {
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.products__pagination button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+#current-page {
+    font-weight: bold;
+}
+
+/* ... (mantén los estilos existentes) ... */
+
+.products {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.products__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.product-card {
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.product-card h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.product-card p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+

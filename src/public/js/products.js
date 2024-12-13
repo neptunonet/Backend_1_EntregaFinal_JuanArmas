@@ -4,6 +4,7 @@ const btnPrevPage = document.getElementById("btn-prev-page");
 const btnNextPage = document.getElementById("btn-next-page");
 const currentPageSpan = document.getElementById("current-page");
 const sortSelect = document.getElementById("sort-select");
+const productsGrid = document.getElementById("products-grid");
 
 let currentPage = 1;
 let totalPages = 1;
@@ -15,13 +16,19 @@ const loadProductsList = async (page = 1, sort = "") => {
         const data = await response.json();
         const products = data.payload.docs ?? [];
 
-        // Limpiar la lista antes de agregar nuevos productos
-        productsList.innerHTML = "";
+        // Limpiar la grilla antes de agregar nuevos productos
+        productsGrid.innerHTML = "";
 
         products.forEach((product) => {
-            const li = document.createElement('li');
-            li.textContent = `Id: ${product.id} - Nombre: ${product.title}`;
-            productsList.appendChild(li);
+            const productCard = document.createElement('div');
+            productCard.className = 'product-card';
+            productCard.innerHTML = `
+                <h4>${product.title}</h4>
+                <p>ID: ${product.id}</p>
+                <p>Stock: ${product.stock}</p>
+                <p>Estado: ${product.status ? 'Activo' : 'Inactivo'}</p>
+            `;
+            productsGrid.appendChild(productCard);
         });
 
         // Actualizar la información de paginación
