@@ -41,11 +41,29 @@ async function addToCart(productId) {
 
         if (data.status === 'success') {
             updateCartCount(1);
+            Toastify({
+                text: "Producto agregado al carrito",
+                duration: 3000,
+                close: true,
+                gravity: "bottom",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                stopOnFocus: true,
+              }).showToast();
         } else {
             throw new Error(data.message || 'Error al agregar producto al Cart');
         }
     } catch (error) {
-        console.error('Error al agregar producto al Cart:', error);
+        //console.error('Error al agregar producto al Cart:', error);
+        Toastify({
+            text: "Error al agregar el producto al carrito",
+            duration: 3000,
+            close: true,
+            gravity: "bottom",
+            position: "right",
+            backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+            stopOnFocus: true,
+          }).showToast();
     }
 }
 

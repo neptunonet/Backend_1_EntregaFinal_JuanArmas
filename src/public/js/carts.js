@@ -1,3 +1,4 @@
+
 function updateCartCount() {
     const cartCountElement = document.getElementById('cart-count');
     let totalQuantity = 0;
@@ -9,8 +10,6 @@ function updateCartCount() {
 
     cartCountElement.textContent = totalQuantity;
 }
-
-
 
 async function updateQuantity(cartId, productId, currentQuantity, change) {
     try {
