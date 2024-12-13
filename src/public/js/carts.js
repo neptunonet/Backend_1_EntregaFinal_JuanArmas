@@ -1,3 +1,17 @@
+function updateCartCount() {
+    const cartCountElement = document.getElementById('cart-count');
+    let totalQuantity = 0;
+
+    // Suma las cantidades de todos los productos en todos los carritos
+    document.querySelectorAll('.quantity').forEach(quantityElement => {
+        totalQuantity += parseInt(quantityElement.textContent);
+    });
+
+    cartCountElement.textContent = totalQuantity;
+}
+
+
+
 async function updateQuantity(cartId, productId, currentQuantity, change) {
     try {
         const newQuantity = currentQuantity + change;
@@ -54,6 +68,11 @@ async function removeProduct(cartId, productId) {
 }
 
 async function emptyCart(cartId) {
+    const userConfirmed = confirm("¿Estás seguro de que deseas vaciar el carrito?");
+    if (!userConfirmed) {
+        return;
+    }
+
     try {
         const response = await fetch(`/api/carts/${cartId}`, {
             method: 'DELETE'
@@ -71,7 +90,7 @@ async function emptyCart(cartId) {
             throw new Error(data.message || 'Error al vaciar el carrito');
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error al vaciar el carrito:', error);
         alert('Failed to empty the cart. Please try again.');
     }
 }

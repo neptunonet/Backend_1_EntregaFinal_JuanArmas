@@ -1,5 +1,3 @@
-const productsList = document.getElementById("products-list");
-const btnRefreshProductsList = document.getElementById("btn-refresh-products-list");
 const btnPrevPage = document.getElementById("btn-prev-page");
 const btnNextPage = document.getElementById("btn-next-page");
 const currentPageSpan = document.getElementById("current-page");
@@ -143,8 +141,6 @@ const loadProductsList = async (page = 1, sort = "", category = "", status = "",
 function updateProductsList() {
     loadProductsList(currentPage, currentSort, currentCategory, currentStatus, currentPriceOrder);
 }
-
-btnRefreshProductsList.addEventListener("click", updateProductsList);
 
 btnPrevPage.addEventListener("click", () => {
     if (currentPage > 1) {

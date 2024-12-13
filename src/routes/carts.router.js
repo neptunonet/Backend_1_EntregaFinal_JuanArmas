@@ -6,14 +6,13 @@ const cartManager = new CartManager();
 
 router.get("/", async (req, res) => {
     try {
-      const carts = await cartManager.getAll(); 
-      res.render("cart", { carts });
+        const carts = await cartManager.getAll(); 
+        res.render("cart", { carts, title: "MobileHub Cart" });
     } catch (error) {
-      console.error("Error al obtener los carritos:", error);
-      res.status(500).send("Error al obtener los carritos");
+        console.error("Error al obtener los carritos:", error);
+        res.status(500).send("Error al obtener los carritos");
     }
-  });
-
+});
 
 router.get("/:id", async (req, res) => {
     try {
