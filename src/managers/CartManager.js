@@ -9,7 +9,6 @@ export default class CartManager {
         this.#cartModel = CartModel;
     }
 
-    // Busca una receta por su ID
     async #findOneById(id) {
         if (!isValidID(id)) {
             throw new ErrorManager("ID inválido", 400);
@@ -23,8 +22,6 @@ export default class CartManager {
 
         return cart;
     }
-
-    // Obtiene una lista de recetas
     async getAll(params) {
         try {
             const paginationOptions = {
@@ -40,7 +37,6 @@ export default class CartManager {
         }
     }
 
-    // Obtiene una receta específico por su ID
     async getOneById(id) {
         try {
             return await this.#findOneById(id);
@@ -48,8 +44,6 @@ export default class CartManager {
             throw ErrorManager.handleError(error);
         }
     }
-
-    // Inserta una receta
     async insertOne(data) {
         try {
             const cart = await this.#cartModel.create(data);
@@ -58,8 +52,6 @@ export default class CartManager {
             throw ErrorManager.handleError(error);
         }
     }
-
-    // Agrega un producte a una receta o incrementa la cantidad de un producte existente
     async addOneProduct(id, productId) {
         try {
             const cart = await this.#findOneById(id);

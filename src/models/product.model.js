@@ -25,11 +25,10 @@ const productSchema = new Schema({
         trim: true,
     },
 }, {
-    timestamps: true, // Añade timestamps para generar createdAt y updatedAt
-    versionKey: false, // Elimina el campo __v de versión
+    timestamps: true, 
+    versionKey: false, 
 });
 
-// Agrega mongoose-paginate-v2 para habilitar las funcionalidades de paginación.
 productSchema.plugin(paginate);
 
 const ProductModel = model("products", productSchema);

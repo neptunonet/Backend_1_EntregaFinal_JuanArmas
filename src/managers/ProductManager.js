@@ -9,8 +9,6 @@ export default class ProductManager {
     constructor() {
         this.#productModel = ProductModel;
     }
-
-    // Busca un producte por su ID
     async #findOneById(id) {
         if (!isValidID(id)) {
             throw new ErrorManager("ID inválido", 400);
@@ -24,8 +22,6 @@ export default class ProductManager {
 
         return product;
     }
-
-    // Obtiene una lista de productes
     async getAll(params) {
         try {
             const $and = [];
@@ -50,8 +46,6 @@ export default class ProductManager {
             throw ErrorManager.handleError(error);
         }
     }
-
-    // Obtiene un producte específico por su ID
     async getOneById(id) {
         try {
             return await this.#findOneById(id);
@@ -59,8 +53,6 @@ export default class ProductManager {
             throw ErrorManager.handleError(error);
         }
     }
-
-    // Inserta un producte
     async insertOne(data) {
         try {
             const product = await this.#productModel.create({
@@ -73,8 +65,6 @@ export default class ProductManager {
             throw ErrorManager.handleError(error);
         }
     }
-
-    // Actualiza un producte en específico
     async updateOneById(id, data) {
         try {
             const product = await this.#findOneById(id);
@@ -93,7 +83,6 @@ export default class ProductManager {
         }
     }
 
-    // Elimina un producte en específico
     async deleteOneById(id) {
         try {
             const product = await this.#findOneById(id);

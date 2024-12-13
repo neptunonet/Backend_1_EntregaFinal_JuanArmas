@@ -31,30 +31,6 @@ let currentPage = 1;
 let totalPages = 1;
 let currentSort = "";
 
-// const loadProductsList = async (page = 1, sort = "") => {
-//     try {
-//         const response = await fetch(`/api/products?limit=10&page=${page}&sort=${sort}`, { method: "GET" });
-//         const data = await response.json();
-//         const products = data.payload.docs ?? [];
-//         totalPages = data.payload.totalPages;
-
-//         // Limpiar la lista de productos antes de agregar los nuevos
-//         productsList.innerHTML = "";
-
-//         products.forEach((product) => {
-//             const li = document.createElement('li');
-//             li.textContent = `Id: ${product.id} - Nombre: ${product.title}`;
-//             productsList.appendChild(li);
-//         });
-
-//         currentPageSpan.textContent = `Página ${page} de ${totalPages}`;
-//         btnPrevPage.disabled = page <= 1;
-//         btnNextPage.disabled = page >= totalPages;
-//     } catch (error) {
-//         console.error("Error al cargar los productos:", error);
-//     }
-// };
-
 const loadProductsList = async (page = 1, sort = "") => {
     try {
         const response = await fetch(`/api/products?limit=10&page=${page}&sort=${sort}`, { method: "GET" });

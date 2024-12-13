@@ -2,7 +2,6 @@ import { connect, Types } from "mongoose";
 
 // Conecta con la base de datos MongoDB
 export const connectDB = async () => {
-    //const URL = "mongodb+srv://sergio:1234@cluster0.4i0l5oa.mongodb.net/proyecto";
     const URL = "mongodb+srv://juancho:1234@cluster0.fd1th.mongodb.net/final";
 
     try {
@@ -12,8 +11,6 @@ export const connectDB = async () => {
         console.log("Error al conectar con MongoDB", error.message);
     }
 };
-
-// Verifica que un ID sea válido con el formato de ObjectId de MongoDB
 export const isValidID = (id) => {
     return Types.ObjectId.isValid(id);
 };
