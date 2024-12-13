@@ -4,17 +4,25 @@
         {{#each carts}}
             <div class="cart">
                 <h2>Carrito {{this._id}}</h2>
-                <ul>
+                <ul class="product-list">
                     {{#each this.products}}
-                        <li>{{this.product.title}} - Cantidad: {{this.quantity}}</li>
+                        <li class="product-item">
+                            <span class="product-title">{{this.product.title}}</span>
+                            <div class="product-controls">
+                                <button class="btn btn-sm btn-primary" onclick="updateQuantity('{{../this._id}}', '{{this.product._id}}', {{this.quantity}}, -1)">-</button>
+                                <span id="quantity-{{../this._id}}-{{this.product._id}}" class="quantity">{{this.quantity}}</span>
+                                <button class="btn btn-sm btn-primary" onclick="updateQuantity('{{../this._id}}', '{{this.product._id}}', {{this.quantity}}, 1)">+</button>
+                                <button class="btn btn-sm btn-danger" onclick="removeProduct('{{../this._id}}', '{{this.product._id}}')">Eliminar</button>
+                            </div>
+                        </li>
                     {{/each}}
                 </ul>
-                <button class="btn btn-danger" onclick="emptyCart('{{this._id}}')">Vaciar Carrito</button>
+                <button class="btn btn-danger empty-cart" onclick="emptyCart('{{this._id}}')">Vaciar Carrito</button>
             </div>
         {{/each}}
     {{else}}
         <p>No hay carritos para mostrar.</p>
     {{/if}}
-    <a href="/" class="btn">Volver a la Home</a>
+    <a href="/" class="btn btn-primary back-home">Volver a la Home</a>
 </div>
- <script src="/api/public/js/carts.js"></script>
+<script src="/api/public/js/carts.js"></script>

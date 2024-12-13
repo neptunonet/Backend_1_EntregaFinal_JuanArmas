@@ -42,15 +42,12 @@ async function addToCart(productId) {
         const data = await response.json();
 
         if (data.status === 'success') {
-            //console.log('Product added to cart successfully:', productId);
-            //alert('Product added to cart successfully!');
             updateCartCount(1);
         } else {
             throw new Error(data.message || 'Error al agregar producto al Cart');
         }
     } catch (error) {
         console.error('Error al agregar producto al Cart:', error);
-        //alert('Failed to add product to cart. Please try again.');
     }
 }
 
@@ -61,6 +58,7 @@ function updateCartCount(increment) {
         cartCountElement.textContent = cartCount;
     }
 }
+
 async function getInitialCartCount() {
     try {
         const cartId = localStorage.getItem('cartId');
@@ -101,14 +99,14 @@ const loadCategories = async () => {
 
 const loadProductsList = async (page = 1, sort = "", category = "", status = "", priceOrder = "") => {
     try {
-        const queryParams = new URLSearchParams();
-        queryParams.append('limit', 10);
-        queryParams.append('page', page);
-
-        if (sort) queryParams.append('sort', sort);
-        if (category) queryParams.append('category', category);
-        if (status) queryParams.append('status', status);
-        if (priceOrder) queryParams.append('priceOrder', priceOrder);
+        const queryParams = new URLSearchParams({
+            limit: 10,
+            page,
+            sort,
+            category,
+            status,
+            priceOrder
+        });
 
         const response = await fetch(`/api/products?${queryParams}`, { method: "GET" });
         const data = await response.json();
@@ -142,40 +140,48 @@ const loadProductsList = async (page = 1, sort = "", category = "", status = "",
     }
 };
 
-btnRefreshProductsList.addEventListener("click", () => {
+function updateProductsList() {
     loadProductsList(currentPage, currentSort, currentCategory, currentStatus, currentPriceOrder);
-});
+}
+
+btnRefreshProductsList.addEventListener("click", updateProductsList);
 
 btnPrevPage.addEventListener("click", () => {
     if (currentPage > 1) {
-        loadProductsList(currentPage - 1, currentSort, currentCategory, currentStatus, currentPriceOrder);
+        currentPage--;
+        updateProductsList();
     }
 });
 
 btnNextPage.addEventListener("click", () => {
     if (currentPage < totalPages) {
-        loadProductsList(currentPage + 1, currentSort, currentCategory, currentStatus, currentPriceOrder);
+        currentPage++;
+        updateProductsList();
     }
 });
 
 sortSelect.addEventListener("change", (event) => {
     currentSort = event.target.value;
-    loadProductsList(1, currentSort, currentCategory, currentStatus, currentPriceOrder);
+    currentPage = 1;
+    updateProductsList();
 });
 
 categorySelect.addEventListener("change", (event) => {
     currentCategory = event.target.value;
-    loadProductsList(1, currentSort, currentCategory, currentStatus, currentPriceOrder);
+    currentPage = 1;
+    updateProductsList();
 });
 
 statusSelect.addEventListener("change", (event) => {
     currentStatus = event.target.value;
-    loadProductsList(1, currentSort, currentCategory, currentStatus, currentPriceOrder);
+    currentPage = 1;
+    updateProductsList();
 });
 
 priceOrderSelect.addEventListener("change", (event) => {
     currentPriceOrder = event.target.value;
-    loadProductsList(1, currentSort, currentCategory, currentStatus, currentPriceOrder);
+    currentPage = 1;
+    updateProductsList();
 });
 
 // Inicialización
