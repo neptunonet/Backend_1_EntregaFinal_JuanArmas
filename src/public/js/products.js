@@ -38,15 +38,41 @@ async function addToCart(productId) {
             localStorage.setItem('cartId', cartId);
         }
 
-        const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+        // Check if the product already exists in the cart
+        const cartResponse = await fetch(`/api/carts/${cartId}`);
+        if (!cartResponse.ok) {
+            throw new Error('Error al obtener el carrito');
+        }
 
-        if (!response.ok) {
-            throw new Error('Error al agregar producto al carrito');
+        const cartData = await cartResponse.json();
+        const existingProduct = cartData.payload.products.find(p => p.product._id === productId);
+
+        if (existingProduct) {
+            // If the product exists, update its quantity
+            const newQuantity = existingProduct.quantity + 1;
+            const updateResponse = await fetch(`/api/carts/${cartId}/products/${productId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ quantity: newQuantity })
+            });
+
+            if (!updateResponse.ok) {
+                throw new Error('Error al actualizar la cantidad del producto');
+            }
+        } else {
+            // If the product does not exist, add it to the cart
+            const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al agregar producto al carrito');
+            }
         }
 
         updateCartCount(1);
@@ -73,6 +99,7 @@ async function addToCart(productId) {
         }).showToast();
     }
 }
+
 function updateCartCount(increment) {
     cartCount += increment;
     const cartCountElement = document.getElementById('cart-count');

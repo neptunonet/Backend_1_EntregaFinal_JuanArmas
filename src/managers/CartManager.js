@@ -70,6 +70,8 @@ async addOneProduct(id, productId) {
     }
 }
 
+
+
     async removeProductFromCart(cartId, productId) {
         if (!isValidID(cartId) || !isValidID(productId)) {
           throw new ErrorManager("ID inválido", 400);
