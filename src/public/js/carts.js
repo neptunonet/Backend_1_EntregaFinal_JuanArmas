@@ -3,7 +3,6 @@ function updateCartCount() {
     const cartCountElement = document.getElementById('cart-count');
     let totalQuantity = 0;
 
-    // Suma las cantidades de todos los productos en todos los carritos
     document.querySelectorAll('.quantity').forEach(quantityElement => {
         totalQuantity += parseInt(quantityElement.textContent);
     });
@@ -15,7 +14,7 @@ async function updateQuantity(cartId, productId, currentQuantity, change) {
     try {
         const newQuantity = currentQuantity + change;
         if (newQuantity < 1) {
-            return;  // No permitir cantidades menores a 1
+            return;
         }
 
         const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
@@ -39,7 +38,7 @@ async function updateQuantity(cartId, productId, currentQuantity, change) {
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('Failed to update product quantity. Please try again.');
+        alert('Error al eliminar el carrito. Intente nuevamente..');
     }
 }
 
@@ -56,13 +55,13 @@ async function removeProduct(cartId, productId) {
         const data = await response.json();
 
         if (data.status === 'success') {
-            location.reload();  // Recargar la página para reflejar los cambios
+            location.reload();  
         } else {
             throw new Error(data.message || 'Error al eliminar el producto del carrito');
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('Failed to remove product from cart. Please try again.');
+        alert('Error al eliminar el carrito. Intente nuevamente.');
     }
 }
 
@@ -78,18 +77,20 @@ async function emptyCart(cartId) {
         });
 
         if (!response.ok) {
-            throw new Error('Error al vaciar el carrito');
+            throw new Error('Error al eliminar el carrito');
         }
 
         const data = await response.json();
 
         if (data.status === 'success') {
-            location.reload();  // Recargar la página para reflejar los cambios
+            localStorage.removeItem('cartId');
+            location.reload(); 
         } else {
-            throw new Error(data.message || 'Error al vaciar el carrito');
+            throw new Error(data.message || 'Error al eliminar el carrito');
         }
     } catch (error) {
-        console.error('Error al vaciar el carrito:', error);
-        alert('Failed to empty the cart. Please try again.');
+        console.error('Error al eliminar el carrito:', error);
+        alert('Error al eliminar el carrito. Intente nuevamente.');
     }
+    
 }

@@ -20,9 +20,21 @@ async function addToCart(productId) {
         let cartId = localStorage.getItem('cartId');
 
         if (!cartId) {
-            const createCartResponse = await fetch('/api/carts', { method: 'POST' });
-            const createCartData = await createCartResponse.json();
-            cartId = createCartData.payload._id;
+            const newCartResponse = await fetch('/api/carts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ products: [] })
+            });
+
+            if (!newCartResponse.ok) {
+                throw new Error('Error al crear un nuevo carrito');
+            }
+
+            const newCartData = await newCartResponse.json();
+            cartId = newCartData.payload._id;
+
             localStorage.setItem('cartId', cartId);
         }
 
@@ -34,33 +46,24 @@ async function addToCart(productId) {
         });
 
         if (!response.ok) {
-            if (response.status === 404) {
-                // Si el carrito no se encuentra, creamos uno nuevo
-                localStorage.removeItem('cartId');
-                return addToCart(productId);
-            }
-            throw new Error('Error al agregar producto al Cart');
+            throw new Error('Error al agregar producto al carrito');
         }
 
-        const data = await response.json();
+        updateCartCount(1);
 
-        if (data.status === 'success') {
-            updateCartCount(1);
-            Toastify({
-                text: "Producto agregado al carrito",
-                duration: 3000,
-                close: true,
-                gravity: "bottom",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-                stopOnFocus: true,
-            }).showToast();
-        } else {
-            throw new Error(data.message || 'Error al agregar producto al Cart');
-        }
-    } catch (error) {
         Toastify({
-            text: "Error al agregar el producto al carrito",
+            text: "Producto agregado al carrito",
+            duration: 3000,
+            close: true,
+            gravity: "bottom",
+            position: "right",
+            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            stopOnFocus: true,
+        }).showToast();
+    } catch (error) {
+        console.error('Error:', error);
+        Toastify({
+            text: `Error: ${error.message}`,
             duration: 3000,
             close: true,
             gravity: "bottom",
@@ -70,7 +73,6 @@ async function addToCart(productId) {
         }).showToast();
     }
 }
-
 function updateCartCount(increment) {
     cartCount += increment;
     const cartCountElement = document.getElementById('cart-count');
@@ -94,6 +96,9 @@ async function getInitialCartCount() {
                 cartCount = cart.payload.products.reduce((total, product) => total + product.quantity, 0);
                 updateCartCount(0);
             }
+        } else if (response.status === 404) {
+            localStorage.removeItem('cartId');
+            updateCartCount(0);
         }
     } catch (error) {
         console.error('Error al obtener el conteo inicial del carrito:', error);

@@ -23,35 +23,31 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-
-router.post("/", async (req, res) => {
-    try {
-        const cart = await cartManager.insertOne(req.body);
-        res.status(201).json({ status: "success", payload: cart });
-    } catch (error) {
-        res.status(error.code).json({ status: "error", message: error.message });
-    }
-});
-
-
 router.post("/:cid/products/:pid", async (req, res) => {
     try {
         const { cid, pid } = req.params;
         let cart;
-
         try {
-            cart = await cartManager.getOneById(cid, { populate: true });
+            cart = await cartManager.addOneProduct(cid, pid);
         } catch (error) {
-            if (error.code === 404) {
-                // Si el carrito no existe, creamos uno nuevo
-                cart = await cartManager.insertOne({ products: [] });
+            if (error.message === "ID inválido") {
+                // Si el ID del carrito es inválido, devolver un mensaje de error
+                return res.status(404).json({ status: "error", message: "El carrito no existe" });
             } else {
                 throw error;
             }
         }
-
-        cart = await cartManager.addOneProduct(cart._id, pid);
         res.status(200).json({ status: "success", payload: cart });
+    } catch (error) {
+        res.status(error.code || 500).json({ status: "error", message: error.message });
+    }
+});
+
+// Agregar esta nueva ruta para crear un carrito
+router.post("/", async (req, res) => {
+    try {
+        const cart = await cartManager.insertOne({ products: [] });
+        res.status(201).json({ status: "success", payload: cart });
     } catch (error) {
         res.status(error.code || 500).json({ status: "error", message: error.message });
     }
@@ -92,11 +88,11 @@ router.put("/:cid/products/:pid", async (req, res) => {
 });
 
 
-router.delete("/:cid", async (req, res) => {
+router.delete("/:id", async (req, res) => {
     try {
-        const { cid } = req.params;
-        const emptyCart = await cartManager.emptyCart(cid);
-        res.status(200).json({ status: "success", payload: emptyCart });
+        const cartId = req.params.id;
+        const cart = await cartManager.deleteCart(cartId);
+        res.status(200).json({ status: "success", message: "Carrito eliminado", payload: cart });
     } catch (error) {
         res.status(error.code || 500).json({ status: "error", message: error.message });
     }

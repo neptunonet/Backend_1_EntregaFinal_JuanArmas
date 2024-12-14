@@ -40,24 +40,35 @@ export default class CartManager {
         }
     }
 
-    async addOneProduct(id, productId) {
+async addOneProduct(id, productId) {
+    try {
+        let cart;
         try {
-            let cart = await this.#findOneById(id);
-            const productIndex = cart.products.findIndex((item) => item.product._id.toString() === productId);
-    
-            if (productIndex >= 0) {
-                cart.products[productIndex].quantity++;
-            } else {
-                cart.products.push({ product: productId, quantity: 1 });
-            }
-    
-            await cart.save();
-    
-            return cart;
+            cart = await this.#findOneById(id);
         } catch (error) {
-            throw new ErrorManager(error.message, error.code);
+            if (error.message === "ID no encontrado") {
+                // Si el carrito no existe, creamos uno nuevo
+                cart = await this.insertOne({ products: [] });
+            } else {
+                throw error;
+            }
         }
+
+        const productIndex = cart.products.findIndex((item) => item.product.toString() === productId);
+
+        if (productIndex >= 0) {
+            cart.products[productIndex].quantity++;
+        } else {
+            cart.products.push({ product: productId, quantity: 1 });
+        }
+
+        await cart.save();
+
+        return cart;
+    } catch (error) {
+        throw new ErrorManager(error.message, error.code || 500);
     }
+}
 
     async removeProductFromCart(cartId, productId) {
         if (!isValidID(cartId) || !isValidID(productId)) {
@@ -149,5 +160,18 @@ export default class CartManager {
         }
 
         return cart;
+      }
+      async deleteCart(cartId) {
+          if (!isValidID(cartId)) {
+              throw new ErrorManager("ID inválido", 400);
+          }
+      
+          const cart = await this.#cartModel.findByIdAndDelete(cartId);
+      
+          if (!cart) {
+              throw new ErrorManager("Carrito no encontrado", 404);
+          }
+      
+          return cart;
       }
 }
