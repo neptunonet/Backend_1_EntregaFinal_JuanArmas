@@ -359,3 +359,24 @@ header nav ul li a:hover {
     transform: scale(1.05);
     text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
 }
+
+.error404 {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.error404 h1 {
+    font-size: 3em;
+    color: #ff0000;
+}
+
+.error404 h3 {
+    font-size: 1.5em;
+    color: #333;
+}
+
+.error404 img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 20px;
+}
