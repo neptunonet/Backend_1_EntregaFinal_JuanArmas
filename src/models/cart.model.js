@@ -7,11 +7,11 @@ const cartSchema = new Schema({
             product: {
                 type: Schema.Types.ObjectId,
                 ref: "products",
-                required: [ true, "El nombre del producte es obligatorio" ],
+                required: [ true, "El nombre del producto es obligatorio" ],
             },
             quantity: {
                 type: Number,
-                required: [ true, "La cantidad del producte es obligatoria" ],
+                required: [ true, "La cantidad del producto es obligatorio" ],
                 min: [ 1, "La cantidad debe ser mayor que 0" ],
             },
             _id: false,
