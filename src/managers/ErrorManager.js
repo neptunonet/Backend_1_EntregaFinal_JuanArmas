@@ -1,3 +1,7 @@
+// Este archivo define la clase ErrorManager, que extiende la clase Error nativa de JavaScript.
+// Proporciona una forma estandarizada de manejar errores en la aplicación, incluyendo
+// la asignación de códigos de error HTTP y el manejo específico de errores de validación y duplicados.
+
 export default class ErrorManager extends Error {
     constructor(message, code) {
         super(message);

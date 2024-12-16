@@ -1,3 +1,7 @@
+// Este archivo define el esquema y modelo de Mongoose para los productos.
+// Incluye la estructura de datos para los productos, con validaciones y opciones de formato.
+// También incorpora el plugin de paginación para facilitar las consultas paginadas.
+
 import { Schema, model } from "mongoose";
 import paginate from "mongoose-paginate-v2";
 

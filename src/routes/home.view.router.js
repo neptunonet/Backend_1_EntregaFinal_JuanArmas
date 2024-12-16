@@ -1,3 +1,8 @@
+// Este archivo define el router para la vista de la página de inicio.
+// Maneja la ruta principal ("/") y renderiza la plantilla "home" con un título personalizado.
+// También incluye manejo de errores básico para problemas de renderización.
+
+
 import { Router } from "express";
 
 const router = Router();

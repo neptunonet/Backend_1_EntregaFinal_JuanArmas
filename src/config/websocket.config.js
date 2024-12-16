@@ -1,9 +1,12 @@
+// Este archivo configura el servidor Socket.IO para la aplicación, estableciendo
+// eventos para la conexión de clientes, la inserción y eliminación de productos,
+// y la actualización en tiempo real de la lista de productos para todos los clientes conectados
+
 import { Server } from "socket.io";
 import ProductManager from "../managers/ProductManager.js";
 
 const productManager = new ProductManager();
 
-// Configura el servidor Socket.IO
 export const config = (httpServer) => {
     const socketServer = new Server(httpServer);
 
@@ -30,7 +33,7 @@ export const config = (httpServer) => {
             }
         });
         socket.on("disconnect", () => {
-            console.log("Se desconecto un cliente"); // Indica que un cliente se desconectó
+            console.log("Se desconecto un cliente"); 
         });
     });
 };

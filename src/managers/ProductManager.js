@@ -1,3 +1,7 @@
+// Este archivo define la clase ProductManager, que maneja todas las operaciones relacionadas con productos.
+// Incluye métodos para obtener, insertar, actualizar y eliminar productos, así como para manejar
+// la paginación, el filtrado y la ordenación de productos. También gestiona las categorías de productos.
+
 import ErrorManager from "./ErrorManager.js";
 import { isValidID } from "../config/mongoose.config.js";
 import ProductModel from "../models/product.model.js";

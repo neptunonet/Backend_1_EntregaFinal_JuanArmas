@@ -1,3 +1,7 @@
+// Este archivo define la clase CartManager, que maneja todas las operaciones relacionadas
+// con los carritos de compra,incluyendo creación, actualización, eliminación y
+// consulta de carritos, así como la gestión de productos dentro de ellos.-
+
 import ErrorManager from "./ErrorManager.js";
 import { isValidID } from "../config/mongoose.config.js";
 import CartModel from "../models/cart.model.js";
@@ -69,8 +73,6 @@ async addOneProduct(id, productId) {
         throw new ErrorManager(error.message, error.code || 500);
     }
 }
-
-
 
     async removeProductFromCart(cartId, productId) {
         if (!isValidID(cartId) || !isValidID(productId)) {
@@ -167,13 +169,13 @@ async addOneProduct(id, productId) {
           if (!isValidID(cartId)) {
               throw new ErrorManager("ID inválido", 400);
           }
-      
+
           const cart = await this.#cartModel.findByIdAndDelete(cartId);
-      
+
           if (!cart) {
               throw new ErrorManager("Carrito no encontrado", 404);
           }
-      
+
           return cart;
       }
 }

@@ -1,3 +1,7 @@
+// Este archivo configura Handlebars como el motor de plantillas para la aplicación Express,
+// estableciendo opciones como el directorio de layouts, el layout por defecto, la extensión de archivo,
+// y algunas opciones de tiempo de ejecución para permitir el acceso a propiedades y métodos de prototipos
+
 import { create } from "express-handlebars";
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -5,7 +9,6 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Configura el servidor para usar Handlebars como motor de plantillas
 export const config = (app) => {
     const hbs = create({
         helpers: {

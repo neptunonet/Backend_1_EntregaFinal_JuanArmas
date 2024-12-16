@@ -1,3 +1,6 @@
+// Este archivo maneja la lógica del cliente para el carrito de compras, incluyendo
+// actualización de cantidades, eliminación de productos, vaciado del carrito y
+// actualización del contador de productos en el carrito.-
 
 function updateCartCount() {
     const cartCountElement = document.getElementById('cart-count');
@@ -55,7 +58,7 @@ async function removeProduct(cartId, productId) {
         const data = await response.json();
 
         if (data.status === 'success') {
-            location.reload();  
+            location.reload();
         } else {
             throw new Error(data.message || 'Error al eliminar el producto del carrito');
         }
@@ -84,7 +87,7 @@ async function emptyCart(cartId) {
 
         if (data.status === 'success') {
             localStorage.removeItem('cartId');
-            location.reload(); 
+            location.reload();
         } else {
             throw new Error(data.message || 'Error al eliminar el carrito');
         }
@@ -92,5 +95,4 @@ async function emptyCart(cartId) {
         console.error('Error al eliminar el carrito:', error);
         alert('Error al eliminar el carrito. Intente nuevamente.');
     }
-    
 }

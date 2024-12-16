@@ -1,3 +1,5 @@
+// Este archivo define las rutas y controladores para las operaciones CRUD del Cart
+
 import { Router } from "express";
 import CartManager from "../managers/CartManager.js";
 
@@ -6,7 +8,7 @@ const cartManager = new CartManager();
 
 router.get("/", async (req, res) => {
     try {
-        const carts = await cartManager.getAll(); 
+        const carts = await cartManager.getAll();
         res.render("cart", { carts, title: "MobileHub Cart" });
     } catch (error) {
         console.error("Error al obtener los carritos:", error);
@@ -31,7 +33,6 @@ router.post("/:cid/products/:pid", async (req, res) => {
             cart = await cartManager.addOneProduct(cid, pid);
         } catch (error) {
             if (error.message === "ID inválido") {
-                // Si el ID del carrito es inválido, devolver un mensaje de error
                 return res.status(404).json({ status: "error", message: "El carrito no existe" });
             } else {
                 throw error;
@@ -43,7 +44,6 @@ router.post("/:cid/products/:pid", async (req, res) => {
     }
 });
 
-// Agregar esta nueva ruta para crear un carrito
 router.post("/", async (req, res) => {
     try {
         const cart = await cartManager.insertOne({ products: [] });

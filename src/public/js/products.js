@@ -1,3 +1,7 @@
+// Este archivo maneja la lógica del cliente para la página de productos,
+// incluyendo la carga de productos, paginación, filtrado, ordenamiento
+// y funcionalidad del carrito de compras
+
 const btnPrevPage = document.getElementById("btn-prev-page");
 const btnNextPage = document.getElementById("btn-next-page");
 const currentPageSpan = document.getElementById("current-page");
@@ -38,7 +42,6 @@ async function addToCart(productId) {
             localStorage.setItem('cartId', cartId);
         }
 
-        // Check if the product already exists in the cart
         const cartResponse = await fetch(`/api/carts/${cartId}`);
         if (!cartResponse.ok) {
             throw new Error('Error al obtener el carrito');
@@ -48,7 +51,6 @@ async function addToCart(productId) {
         const existingProduct = cartData.payload.products.find(p => p.product._id === productId);
 
         if (existingProduct) {
-            // If the product exists, update its quantity
             const newQuantity = existingProduct.quantity + 1;
             const updateResponse = await fetch(`/api/carts/${cartId}/products/${productId}`, {
                 method: 'PUT',
@@ -62,7 +64,6 @@ async function addToCart(productId) {
                 throw new Error('Error al actualizar la cantidad del producto');
             }
         } else {
-            // If the product does not exist, add it to the cart
             const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
                 method: 'POST',
                 headers: {
@@ -86,8 +87,10 @@ async function addToCart(productId) {
             backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
             stopOnFocus: true,
         }).showToast();
+
     } catch (error) {
         console.error('Error:', error);
+
         Toastify({
             text: `Error: ${error.message}`,
             duration: 3000,

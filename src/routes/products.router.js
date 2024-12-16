@@ -1,3 +1,6 @@
+
+// Este archivo define las rutas y controladores para las operaciones CRUD de productos
+
 import { Router } from "express";
 import ProductManager from "../managers/ProductManager.js";
 
@@ -23,7 +26,7 @@ router.get('/products', async (req, res) => {
             sort: sort ? JSON.parse(sort) : undefined
         };
         const filter = {};
-        if (category) filter.category = category; // Asegúrate de que esta línea esté presente
+        if (category) filter.category = category;
         if (status) filter.status = status === 'true';
 
         const result = await productManager.getProducts(filter, options, priceOrder);

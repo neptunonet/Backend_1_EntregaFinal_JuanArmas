@@ -1,3 +1,4 @@
+// Este archivo define el modelo de datos para el carrito de compras utilizando Mongoose
 import { Schema, model } from "mongoose";
 import paginate from "mongoose-paginate-v2";
 
